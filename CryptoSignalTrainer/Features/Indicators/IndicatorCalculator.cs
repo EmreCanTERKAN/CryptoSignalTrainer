@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CryptoSignalTrainer.Data;
+﻿using CryptoSignalTrainer.Data;
 using CryptoSignalTrainer.Models;
 using Skender.Stock.Indicators;
 
@@ -87,4 +84,6 @@ public static class IndicatorCalculator
 
         return result;
     }
+
+
 }
