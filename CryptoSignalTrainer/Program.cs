@@ -1,20 +1,32 @@
-﻿//var candles = CandleLoader.LoadCandles("candles.csv");
-//var inputs = IndicatorCalculator.Calculate(candles);
+﻿using CryptoSignalTrainer;
+using CryptoSignalTrainer.Data;
+using CryptoSignalTrainer.Exporters;
+using CryptoSignalTrainer.Features.PFI;
 
+var candles = CandleLoader.LoadCandles("SOLUSDT_klines.csv");
+var inputs = IndicatorCalculator.Calculate(candles);
+
+
+//Sinyal üretmek..
 //var labeled = new List<ModelInput>();
-
+//var calculator = new SmartSignalCalculator(cooldownBars: 5);
 //for (int i = 1; i < inputs.Count; i++)
 //{
-//    var current = inputs[i];
-//    var previous = inputs[i - 1];
+//    var signal = calculator.Calculate(inputs[i], inputs[i - 1], i);
+//    inputs[i].SignalLabel = (int)signal;
+//    Console.WriteLine($"{i}: {signal}");
+//    labeled.Add(inputs[i]);
 
-//    current.SignalLabel = SignalCalculator.CalculateSignal(current, previous);
-//    labeled.Add(current);
 //}
 
-//CsvExporter.ExportLabeledData(labeled, "labeled_data.csv");
-//Console.WriteLine("Labeled data exported to labeled_data.csv");
+CsvExporter.ExportLabeledData(inputs, "test.csv");
+Console.WriteLine("başarıyla oluştu");
 
-string dataPath = "labeled_data.csv";
-string modelPath = "trainedModel_oneversusall.zip";
-Backtester.RunBacktestWithRiskManagement(modelPath, dataPath);
+#region Backtest
+string dataPath = "test.csv";
+string modelPath = "traniner_model_v1.zip";
+//ModelTrainer.TrainAdvanced(dataPath, modelPath);
+
+FeatureImportanceCalculator.ComputePermutationFeatureImportance(modelPath, dataPath);
+//Backtester.RunBacktestWithRiskManagement(modelPath, dataPath);
+#endregion
